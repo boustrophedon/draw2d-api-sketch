@@ -1,0 +1,7 @@
+[package]
+name = "draw2d_sketch"
+version = "0.1.0"
+authors = ["Harry Stern <harry@harrystern.net>"]
+
+[dependencies]
+cairo-rs = { version = "*", features = ["png"] }
