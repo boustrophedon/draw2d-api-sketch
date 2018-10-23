@@ -1,7 +1,7 @@
 extern crate draw2d_sketch as draw2d;
 
 use std::fs::File;
-use draw2d::{CairoRenderer, Geometry, Paint};
+use draw2d::{Renderer, CairoRenderer, Geometry, Paint};
 
 fn main() {
     let mut renderer = CairoRenderer::new(File::create("/tmp/output.png").unwrap());
@@ -16,28 +16,29 @@ fn main() {
         translation: [100.0, 100.0],
         color: [1.0, 0.0, 0.0, 1.0],
         fill: false,
-    };
-    let p3 = Paint {
-        fill: true,
-        color: [0.0, 1.0, 0.0, 1.0],
         ..Default::default()
     };
+    let p3 = Paint {
+        translation: [-40.0, 0.0], 
+        fill: true,
+        color: [0.0, 1.0, 0.0, 1.0],
+    };
 
-    // note that because we set the green rectangle first, it gets drawn on top of the black
-    // square.
-    let h_r1 = renderer.add_geometry(r1);
-    let h_r2 = renderer.add_geometry(r2);
-    let h_r3 = renderer.add_geometry(r3);
-    let h_c1 = renderer.add_geometry(c1);
+    // note that because we add the green rectangle's geometry *last*, it gets drawn on top of the
+    // black square.
+    let h_r1 = renderer.add_geometry(r1).unwrap();
+    let h_r2 = renderer.add_geometry(r2).unwrap();
+    let h_r3 = renderer.add_geometry(r3).unwrap();
+    let h_c1 = renderer.add_geometry(c1).unwrap();
 
-    let h_p1 = renderer.add_paint(p1);
-    let h_p2 = renderer.add_paint(p2);
-    let h_p3 = renderer.add_paint(p3);
+    let h_p1 = renderer.add_paint(p1).unwrap();
+    let h_p2 = renderer.add_paint(p2).unwrap();
+    let h_p3 = renderer.add_paint(p3).unwrap();
 
-    renderer.set_paint(h_r1, h_p1);
-    renderer.set_paint(h_r2, h_p2);
-    renderer.set_paint(h_r3, h_p3);
-    renderer.set_paint(h_c1, h_p1);
+    renderer.set_paint(h_r1, h_p1).unwrap();
+    renderer.set_paint(h_r2, h_p2).unwrap();
+    renderer.set_paint(h_r3, h_p3).unwrap();
+    renderer.set_paint(h_c1, h_p1).unwrap();
 
     renderer.render().unwrap();
 }
